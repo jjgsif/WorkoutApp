@@ -1,13 +1,11 @@
 import { Pressable, StyleSheet } from 'react-native';
 import { ScrollView, TextInput } from 'react-native';
-import { Button } from 'react-native';
 import { Link } from 'expo-router';
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as SQLite from "expo-sqlite"
 import {useState, useEffect} from "react";
-import { useColorScheme } from 'react-native';
+
 
 
 
@@ -39,13 +37,14 @@ function dbApp(){
     //    db.transaction(tx=>
     //     {tx.executeSql("DROP TABLE workouts;", null!, (txObj, resultSet) => {console.log(resultSet.rowsAffected)}, (txObj, error) => console.log(error));
     //      });
-    db.transaction(tx=>
+    db.transaction(tx=>// @ts-ignore
     {tx.executeSql("CREATE TABLE IF NOT EXISTS exercise (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, reps INTEGER, workout INTEGER, weight INTEGER, lbs BOOLEAN);", null!, (txObj, resultSet) => {}, (txObj, error) => console.log(error));
     });
-    db.transaction(tx=>
+    db.transaction(tx=> // @ts-ignore
       {tx.executeSql("CREATE TABLE IF NOT EXISTS workouts (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, daylogged DATETIME);", null!, (txObj, resultSet) => {}, (txObj, error) => console.log(error));
     });
     db.transaction(tx => 
+      // @ts-ignore
       tx.executeSql("SELECT * FROM workouts;", null!, (txObj, resultSet) => {setNames(resultSet.rows._array); },(txObj, error) => console.log(error)));
     setLoading(false);
   },[1]);

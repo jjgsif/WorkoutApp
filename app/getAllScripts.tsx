@@ -12,12 +12,12 @@ export function workoutForm(){
     const [exercise, setExercise] = useState([
         {label: 'Bench Press', value: 'Bench Press'},
         {label: 'Incline Bench Press', value: 'Incline Bench Press'},
-        {label: 'Incline Dumbbell Press', value: 'IDPress'},
-        {label: 'Pec Deck', value: 'PDeck'},
-        {label: 'Cable Flys', value: 'CFlys'},
-        {label: 'Dumbbell Press', value:'DPress'},
-        {label: 'Machine Press', value:'MFlatPress'},
-        {label: 'Machine Incline Press', value: 'MIPress'}
+        {label: 'Incline Dumbbell Press', value: 'Incline Dumbell Press'},
+        {label: 'Pec Deck', value: 'Pec Deck'},
+        {label: 'Cable Flys', value: 'Cable Flys'},
+        {label: 'Dumbbell Press', value:'Dumbbell Press'},
+        {label: 'Machine Press', value:'Machine Press'},
+        {label: 'Incline Machine Press', value: 'Incline Machine Press'}
         ]);
     const [eName, setEName] = useState("");
     const [reps, setReps] = useState(0);
@@ -28,6 +28,23 @@ export function workoutForm(){
     const [id, setID] = useState(0);
     const [weight, setWeight] = useState(0);
     const [unit, setUnit] = useState(false);
+    const [newExercise, setNewExcersise] = useState({label:"", value: ""});
+    const [on, setOn] = useState(false);
+    
+
+    const addExercise = (turnedOn:boolean) => {
+        if(turnedOn){
+        return (
+        <View>
+            <TextInput style={styles.input} placeholder="Exercise name" onChangeText={(text)=>setNewExcersise({label: text, value: text})}/>
+            <Button title="Add to list" onPress={()=>{setExercise(exercise.concat(newExercise))}}/>
+        </View>
+        );
+        }
+        else{
+            return;
+        }
+    }
 
     const addWorkout = () => {
         db.transaction(tx=>
@@ -67,6 +84,8 @@ export function workoutForm(){
         setItems={setExercise}
         onChangeValue={(value)=>{if(value != null){setEName(value)}}}
         />
+        <Button title="Add exercise" onPress={()=>{setOn(true)}}/>
+        {addExercise(on)}
         
         
         <View style={{padding: 10}}><Button title="Add to Workout" onPress={()=>{setWorkout([...workout, {id: workout.length, name: eName, reps: reps, weight: weight, lbs: unit }]);}}/></View>

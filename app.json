@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jjgsif.WorkoutApp"
     },
     "web": {
       "bundler": "metro",
@@ -43,6 +44,12 @@
       "eas": {
         "projectId": "7914cc3f-80a1-4854-be25-985831e576ed"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/7914cc3f-80a1-4854-be25-985831e576ed"
     }
   }
 }
