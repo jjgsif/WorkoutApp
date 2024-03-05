@@ -1,7 +1,8 @@
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, TextInput, Button } from 'react-native';
 import * as SQLite from 'expo-sqlite';
 import { Text, View } from '@/components/Themed';
 import { useEffect, useState } from 'react';
+import { RadioButton } from '../getAllScripts';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 export default function TabTwoScreen() {
@@ -11,9 +12,12 @@ export default function TabTwoScreen() {
   const [profile, setProfile] = useState({name: "", weight: 0, goalWeight: 0, favorite1: "", favorite2: "", favorite3: ""});
   const [userExists, setExistence] = useState(false);
 
+  const units = [{value: "lbs"}, {value: "kgs"}];
+  const [option, setOption] = useState("");
+
   useEffect(()=>{
     db.transaction((tx)=>{
-      tx.executeSql("CREATE TABLE IF NOT EXISTS profile(name TEXT PRIMARY KEY, weight INTEGER, goalWeight INTEGER, favorite1 TEXT, favorite2 TEXT, favorite3 TEXT);");
+      tx.executeSql("CREATE TABLE IF NOT EXISTS profile(name TEXT PRIMARY KEY, weight INTEGER, unit TEXT, goalWeight INTEGER, favorite1 TEXT, favorite2 TEXT, favorite3 TEXT);");
     }
     );
     db.transaction((tx)=>{
@@ -30,6 +34,16 @@ export default function TabTwoScreen() {
         <TextInput style={styles.input}placeholder='Name' onChangeText={(text)=>{setProfile({name: text, weight: profile.weight, goalWeight: profile.goalWeight, favorite1: profile.favorite1, favorite2: profile.favorite2, favorite3: profile.favorite3})}}/>
         <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <Text style={styles.text}>Optional Fields</Text>
+        <View style={{flexDirection:'row', alignItems:'center'}}>
+            <View style={{flexDirection: 'column', flex:2}}>
+              <TextInput style={styles.input} keyboardType='numeric' returnKeyLabel='Done' returnKeyType='done' placeholder='Weight'/>
+              <TextInput style={styles.input} keyboardType='numeric' returnKeyLabel='Done' returnKeyType='done' placeholder='Goal Weight' onChangeText={()=>{}}/> 
+            </View>
+            <RadioButton data={units} onSelect={(value:string) => setOption(value)}/>
+        </View>   
+            <Button color={"white"} title ="Create Profile" onPress={()=>{}}/>
+       
+        
       </View>
     );}
   }
@@ -80,6 +94,7 @@ const styles = StyleSheet.create({
       marginTop: 20,
       width: '70%',
       color: "white", 
-      textAlign: 'center'
+      textAlign: 'center',
+      alignSelf:'center'
     }
 });

@@ -1,5 +1,5 @@
 import DropDownPicker from "react-native-dropdown-picker";
-import { ScrollView, TextInput, Button, Platform, useColorScheme } from "react-native";
+import { ScrollView, TextInput, Button, Platform, useColorScheme, Pressable } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
@@ -102,7 +102,30 @@ export function workoutForm(){
   };
 
   
-
+  
+  //@ts-ignore
+  export function RadioButton({ data, onSelect }) {
+    const [userOption, setUserOption] = useState(null);
+    const selectHandler = (value) => {
+      onSelect(value);
+      setUserOption(value);
+    };
+    return (
+      
+        data.map((item) => {
+          return (
+            <Pressable
+              style={
+                item.value === userOption ? styles.selected : styles.unselected
+              }
+              onPress={() => selectHandler(item.value)}>
+              <Text style={item.value === userOption ? styles.textSelected : styles.textUnselected}> {item.value}</Text>
+            </Pressable>
+          );
+        })
+      
+    );
+  }
 
 
 
@@ -156,7 +179,33 @@ const styles = StyleSheet.create({
         color: "white",
         width: '70%',
         textAlign: 'center'
-      }
+      },
+    unselected: {
+        backgroundColor: 'gray',
+        margin: 5,
+        padding: 10,
+        borderRadius: 10,
+        height: 40,
+        justifyContent:"center"
+    },
+    selected: {
+        backgroundColor: 'white',
+        margin: 6,
+        padding: 10,
+        borderRadius: 10,
+        height: 40,
+        justifyContent:"center"
+    },
+    textUnselected: {
+        color: 'white',
+        alignSelf: 'center'
+        
+    },
+    textSelected: {
+        color: 'black',
+        alignSelf: 'center'
+        
+    },
 })
 
 
