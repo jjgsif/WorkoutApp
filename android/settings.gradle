@@ -1,4 +1,4 @@
-rootProject.name = 'WorkoutApp'
+rootProject.name = 'Journal - A Workout Tracker'
 
 dependencyResolutionManagement {
   versionCatalogs {

@@ -1,10 +1,12 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, useColorScheme } from 'react-native';
 import { ScrollView, TextInput } from 'react-native';
 import { Link } from 'expo-router';
 import { Text, View } from '@/components/Themed';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as SQLite from "expo-sqlite"
 import {useState, useEffect} from "react";
+import { Button } from 'react-native';
+import Colors from '@/constants/Colors';
 
 
 
@@ -59,7 +61,13 @@ function dbApp(){
   return (
     <ScrollView style={{width: '100%'}}>
         {names.map((name, index)=> {if (name.id > -1){let date = new Date(Date.parse(name.daylogged)); console.log(name.daylogged); return (
-          <View style={{width: '100%', alignItems: 'center'}}><Text key={name.id} style={styles.text}>Workout on: {date.getMonth()+1}/{date.getDate()}/{date.getFullYear()}</Text><Text style={styles.title}>{name.name}</Text><View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /></View>
+          <View style={{width: '100%', alignItems: 'center'}}><Text style={styles.title}>{name.name}</Text><Link href={`/${name.id}`} asChild>
+          <Pressable>
+            {({ pressed }) => (
+              <Text style={{marginTop:10, opacity: pressed ? 0.5 : 1, fontSize:20, color:'#2E77BB' }}> Workout on: {date.getMonth()+1}/{date.getDay()}/{date.getFullYear()}</Text>
+            )}
+          </Pressable>
+        </Link><View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /></View>
         )}})}
     </ScrollView>
   )

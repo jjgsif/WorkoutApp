@@ -1,9 +1,13 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { Text } from '@/components/Themed';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { Link } from 'expo-router';
+import { Pressable } from 'react-native';
+import Colors from '@/constants/Colors';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
@@ -51,7 +55,8 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="[datedWorkout]" options={{presentation:'modal', headerTitle:'Workout Info'}} />
+        
       </Stack>  
     </ThemeProvider>
   );

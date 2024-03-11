@@ -1,9 +1,10 @@
 import { ScrollView, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
+import * as FileSystem from 'expo-file-system';
 import { Text, View } from '@/components/Themed';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function TabOneScreen() {
+export default function TabOneScreen(){
   return (
     <View style={styles.container}>
       <Link style={styles.title} href={"./profile"}><Text style={styles.title}>View profile</Text></Link>

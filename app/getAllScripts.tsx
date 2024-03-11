@@ -1,6 +1,7 @@
 import DropDownPicker from "react-native-dropdown-picker";
 import { ScrollView, TextInput, Button, Platform, useColorScheme, Pressable } from "react-native";
 import { Text, View } from "@/components/Themed";
+import * as FileSystem from "expo-file-system";
 import { StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import * as SQLite from "expo-sqlite"
@@ -9,16 +10,11 @@ import * as SQLite from "expo-sqlite"
 export function workoutForm(){
     const [open, setOpen] = useState(false);
     const [val, setVal] = useState(null);
-    const [exercise, setExercise] = useState([
-        {label: 'Bench Press', value: 'Bench Press'},
-        {label: 'Incline Bench Press', value: 'Incline Bench Press'},
-        {label: 'Incline Dumbbell Press', value: 'Incline Dumbell Press'},
-        {label: 'Pec Deck', value: 'Pec Deck'},
-        {label: 'Cable Flys', value: 'Cable Flys'},
-        {label: 'Dumbbell Press', value:'Dumbbell Press'},
-        {label: 'Machine Press', value:'Machine Press'},
-        {label: 'Incline Machine Press', value: 'Incline Machine Press'}
-        ]);
+    const [exercise, setExercise] = useState([]);
+    const [write,setWrite] = useState(false);
+    useEffect(()=>{FileSystem.readAsStringAsync(FileSystem.documentDirectory+"/exercises.json").then((str)=>{setExercise(JSON.parse(str))})},[])
+    
+    useEffect(()=>{FileSystem.writeAsStringAsync(FileSystem.documentDirectory+"/exercises.json", JSON.stringify(exercise)).then(()=>{console.log("Success"), ()=>{console.log("Fail")}}).catch(); setWrite(false)},[write]);
     const [eName, setEName] = useState("");
     const [reps, setReps] = useState(0);
     const [workout, setWorkout] = useState([{id : -1, name: '', reps: 0, weight: 0, lbs: false}]);
@@ -37,7 +33,10 @@ export function workoutForm(){
         return (
         <View>
             <TextInput style={styles.input} placeholder="Exercise name" onChangeText={(text)=>setNewExcersise({label: text, value: text})}/>
-            <Button title="Add to list" onPress={()=>{setExercise(exercise.concat(newExercise))}}/>
+            <Button title="Add to list" onPress={()=>{
+                //@ts-ignore
+                setExercise(exercise.concat(newExercise));
+                setWrite(true);}}/>
         </View>
         );
         }
@@ -80,8 +79,8 @@ export function workoutForm(){
         value={val}
         items={exercise}
         setOpen={setOpen}
-        setValue={setVal}
-        setItems={setExercise}
+        setValue={setVal}//@ts-ignore
+        setItems={setExercise}//@ts-ignore
         onChangeValue={(value)=>{if(value != null){setEName(value)}}}
         />
         <Button title="Add exercise" onPress={()=>{setOn(true)}}/>
@@ -106,13 +105,13 @@ export function workoutForm(){
   //@ts-ignore
   export function RadioButton({ data, onSelect }) {
     const [userOption, setUserOption] = useState(null);
-    const selectHandler = (value) => {
+    const selectHandler = (value:any) => {
       onSelect(value);
       setUserOption(value);
     };
     return (
       
-        data.map((item) => {
+        data.map((item:any) => {
           return (
             <Pressable
               style={
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
       },
     unselected: {
         backgroundColor: 'gray',
-        margin: 5,
+        margin: 6,
         padding: 10,
         borderRadius: 10,
         height: 40,
